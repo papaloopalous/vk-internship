@@ -90,7 +90,7 @@ jobs:
           go mod download
           go mod tidy
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.1.1
           working-directory: ./api
@@ -110,7 +110,7 @@ jobs:
           go mod download
           go mod tidy
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.1.1
           working-directory: ./listing_service
@@ -130,7 +130,7 @@ jobs:
           go mod download
           go mod tidy
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.1.1
           working-directory: ./session_service
@@ -150,7 +150,7 @@ jobs:
           go mod download
           go mod tidy
       - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v7
         with:
           version: v2.1.1
           working-directory: ./user_service
