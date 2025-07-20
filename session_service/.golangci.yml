@@ -11,9 +11,3 @@ linters:
 
 run:
   timeout: 2m
-
-issues:
-  exclude-use-default: false
-
-output:
-  format: colored-line-number
