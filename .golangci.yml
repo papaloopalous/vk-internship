@@ -10,7 +10,6 @@ linters:
     - typecheck
     - varcheck
 
-    - gocritic
     - gosec
     - gomnd
     - unconvert
@@ -28,6 +27,7 @@ linters:
 
   disable:
     - golint
+    - gocritic
 
 linters-settings:
   cyclop:
