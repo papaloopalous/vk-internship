@@ -27,8 +27,11 @@ go.work.sum
 # env file
 .env
 
-.yaml
-.log
+*.yaml
+*.log
+*.png
+*.jpg
+*.jpeg
 
 # Editor/IDE
 # .idea/
