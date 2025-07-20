@@ -69,8 +69,8 @@ jobs:
           go mod tidy
           go build -v ./...
 
-  lint:
-    name: Lint Code
+  lint_api:
+    name: Lint api
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -78,11 +78,44 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.51.2
-          working-directory: .
+          working-directory: ./api
+
+  lint_listing:
+    name: Lint listing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.51.2
+          working-directory: ./listing_service
+
+  lint_session:
+    name: Lint session
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.51.2
+          working-directory: ./session_service
+
+  lint_user:
+    name: Lint user
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.51.2
+          working-directory: ./user_service
 
   deploy:
     name: Deploy via SSH
-    needs: [build_api, build_listing, build_session, build_user, lint]
+    needs: [build_api, build_listing, build_session, build_user, lint_api, lint_listing, lint_session, lint_user]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
