@@ -172,6 +172,16 @@ jobs:
           username: ${{ env.DOCKER_USER }}
           password: ${{ env.DOCKER_TOKEN }}
 
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
+
+      - name: Add remote host to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H $VM_IP >> ~/.ssh/known_hosts
+
       - name: Setup configs from secrets
         run: |
           mkdir -p ./api/config
@@ -201,6 +211,7 @@ jobs:
           LISTING_ADDR=${{ secrets.LISTING_ADDR }}
           EOF
           make all
+          scp .env ${{ secrets.VM_USER }}@$VM_IP:/home/app/
 
 
       - name: Build and Push api Docker Image
@@ -227,16 +238,6 @@ jobs:
           docker build -f Dockerfile -t $DOCKER_USER/vk-internship_user:latest .
           docker push $DOCKER_USER/vk-internship_user:latest
 
-      - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
-
-      - name: Add remote host to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H $VM_IP >> ~/.ssh/known_hosts
-
       - name: Deploy to VM
         run: |
           set -e
@@ -244,29 +245,4 @@ jobs:
           scp compose.yml ${{ secrets.VM_USER }}@$VM_IP:/home/app/
           ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo mkdir -p logs uploads && sudo docker-compose down || echo 'No existing Compose stack to stop'"
           ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker-compose pull"
-          ssh ${{ secrets.VM_USER }}@$VM_IP "cat <<EOF > .env
-          TARANTOOL_HOST=${{ secrets.TARANTOOL_HOST }}
-          TARANTOOL_PORT=${{ secrets.TARANTOOL_PORT }}
-          TARANTOOL_USER=${{ secrets.TARANTOOL_USER }}
-          TARANTOOL_PASS=${{ secrets.TARANTOOL_PASS }}
-          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASS=${{ secrets.POSTGRES_PASS }}
-          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-          LISTING_LIMIT=${{ secrets.LISTING_LIMIT }}
-          API_PORT=${{ secrets.API_PORT }}
-          API_TIMEOUT=${{ secrets.API_TIMEOUT }}
-          API_HEALTHCHECK_INTERVAL=${{ secrets.API_HEALTHCHECK_INTERVAL }}
-          CRYPTO_PRIME=${{ secrets.CRYPTO_PRIME }}
-          CRYPTO_GENERATOR=${{ secrets.CRYPTO_GENERATOR }}
-          CRYPTO_SERVER_SECRET_KEY=${{ secrets.CRYPTO_SERVER_SECRET_KEY }}
-          SESSION_LIFETIME=${{ secrets.SESSION_LIFETIME }}
-          SESSION_HOST=${{ secrets.SESSION_HOST }}
-          SESSION_ADDR=${{ secrets.SESSION_ADDR }}
-          USER_HOST=${{ secrets.USER_HOST }}
-          USER_ADDR=${{ secrets.USER_ADDR }}
-          LISTING_HOST=${{ secrets.LISTING_HOST }}
-          LISTING_ADDR=${{ secrets.LISTING_ADDR }}
-          EOF"
           ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker-compose up -d"
