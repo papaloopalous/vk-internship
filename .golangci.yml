@@ -1,0 +1,55 @@
+linters:
+  enable:
+    - deadcode
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - structcheck
+    - typecheck
+    - varcheck
+
+    - gocritic
+    - gosec
+    - gomnd
+    - unconvert
+    - prealloc
+    - scopelint
+    - goimports
+    - cyclop
+    - maligned
+    - interfacer
+    - stylecheck
+    - whitespace
+    - exhaustive
+    - dupl
+    - nolintlint
+
+  disable:
+    - golint
+
+linters-settings:
+  cyclop:
+    max-complexity: 10
+
+  dupl:
+    threshold: 100
+
+  gocritic:
+    check-shadowing: true
+
+  gosec:
+    severity: "medium"
+
+run:
+  timeout: 5m
+  issues:
+    exclude-rules:
+      - path: _test\.go
+        text: "Error return value is not checked"
+        linters:
+          - errcheck
+
+output:
+  format: colored-line-number
