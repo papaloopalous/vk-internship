@@ -55,23 +55,23 @@ func CreateNewRouter() *mux.Router {
 	defer cancel()
 
 	// Устанавливаем соединения с микросервисами
-	userConn, err := grpc.DialContext(ctx, userAddr,
+	userConn, err := grpc.DialContext(ctx, userAddr, //nolint:staticcheck
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithBlock())
+		grpc.WithBlock()) //nolint:staticcheck
 	if err != nil {
 		log.Fatalf("failed to connect to user service: %v", err)
 	}
 
-	sessionConn, err := grpc.DialContext(ctx, sessionAddr,
+	sessionConn, err := grpc.DialContext(ctx, sessionAddr, //nolint:staticcheck
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithBlock())
+		grpc.WithBlock()) //nolint:staticcheck
 	if err != nil {
 		log.Fatalf("failed to connect to session service: %v", err)
 	}
 
-	listingConn, err := grpc.DialContext(ctx, listingAddr,
+	listingConn, err := grpc.DialContext(ctx, listingAddr, //nolint:staticcheck
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithBlock())
+		grpc.WithBlock()) //nolint:staticcheck
 	if err != nil {
 		log.Fatalf("failed to connect to listing service: %v", err)
 	}
@@ -112,11 +112,6 @@ func CreateNewRouter() *mux.Router {
 
 	// Создаем основной роутер
 	router := mux.NewRouter()
-
-	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("statusOK"))
-	}).Methods("GET")
 
 	// Настраиваем раздачу статических файлов
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("assets"))))

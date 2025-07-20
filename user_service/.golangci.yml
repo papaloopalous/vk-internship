@@ -1,20 +1,19 @@
+version: 2
+
 linters:
+  disable:
+    - gosec
   enable:
     - govet
     - staticcheck
     - unused
     - errcheck
 
-  disable:
-    - typecheck
-    - gosec
-
 run:
   timeout: 2m
 
 issues:
   exclude-use-default: false
-
 
 output:
   format: colored-line-number
