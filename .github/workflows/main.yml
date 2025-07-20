@@ -92,7 +92,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.55
           working-directory: ./api
 
 
@@ -112,7 +112,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.55
           working-directory: ./listing_service
 
 
@@ -132,7 +132,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.55
           working-directory: ./session_service
 
 
@@ -152,7 +152,7 @@ jobs:
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.56
+          version: v1.55
           working-directory: ./user_service
 
 
