@@ -1,9 +1,11 @@
 name: CI/CD Pipeline
 
+
 on:
   push:
     branches:
       - main
+
 
 env:
   GO_VERSION: '1.24'
@@ -11,6 +13,7 @@ env:
   DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   VM_IP: ${{ secrets.VM_IP }}
+
 
 jobs:
   build_api:
@@ -27,6 +30,7 @@ jobs:
           go mod tidy
           go build -v ./...
 
+
   build_listing:
     name: Build listing
     runs-on: ubuntu-latest
@@ -40,6 +44,7 @@ jobs:
         run: |
           go mod tidy
           go build -v ./...
+
 
   build_user:
     name: Build user
@@ -55,6 +60,7 @@ jobs:
           go mod tidy
           go build -v ./...
 
+
   build_session:
     name: Build session
     runs-on: ubuntu-latest
@@ -69,49 +75,74 @@ jobs:
           go mod tidy
           go build -v ./...
 
+
   lint_api:
     name: Lint api
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download Go modules
+        working-directory: ./api
+        run: go mod download
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.56
           working-directory: ./api
 
+
   lint_listing:
     name: Lint listing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download Go modules
+        working-directory: ./listing_service
+        run: go mod download
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.56
           working-directory: ./listing_service
 
+
   lint_session:
     name: Lint session
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download Go modules
+        working-directory: ./session_service
+        run: go mod download
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.56
           working-directory: ./session_service
 
+
   lint_user:
     name: Lint user
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download Go modules
+        working-directory: ./user_service
+        run: go mod download
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.56
           working-directory: ./user_service
+
 
   deploy:
     name: Deploy via SSH
