@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Регистрация</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="icon" href="data:,">
+  <script src="../assets/js/register.js" defer></script>
+  <script src="../assets/js/crypto.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Регистрация</h1>
+    <form id="registerForm">
+      <label>Логин (от 3 до 32 символов, нельзя начинать с цифры, можно использовать латинские буквы, цифры и подчёркивания):</label>
+      <input type="text" id="registerUsername" required>
+      <label>Пароль (от 8 до 64 символов):</label>
+      <input type="password" id="registerPassword" required>
+      <button type="submit">Зарегистрироваться</button>
+    </form>
+    <div id="alertError" class="alert alert-error"></div>
+    <div id="alertSuccess" class="alert alert-success"></div>
+  </div>
+</body>
+</html>

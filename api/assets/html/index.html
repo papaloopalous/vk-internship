@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Главная страница</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="icon" href="data:,">
+  <script src="../assets/js/main.js" defer></script>
+  <style>
+    .pagination {
+      display: flex;
+      gap: 5px;
+      margin-top: 20px;
+      justify-content: center;
+    }
+    .page-btn {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .page-btn.active {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <button id="loginBtn" class="header-btn">Войти</button>
+      <button id="registerBtn" class="header-btn">Зарегистрироваться</button>
+      <button id="logoutBtn" class="header-btn" style="display:none;">Выйти</button>
+      <button id="addListingBtn" class="header-btn" style="display:none;">Создать объявление</button>
+    </div>
+    <h1>Объявления</h1>
+    <div class="filters">
+      <label for="sortField">Сортировать по:</label>
+      <select id="sortField">
+        <option value="created_at">Дате создания</option>
+        <option value="price">Цене</option>
+      </select>
+
+      <label for="sortOrder">Порядок:</label>
+      <select id="sortOrder">
+        <option value="desc">По убыванию</option>
+        <option value="asc">По возрастанию</option>
+      </select>
+
+      <label>
+        <input type="checkbox" id="onlyLiked"> Только избранные
+      </label>
+
+      <button id="applyFilters">Применить</button>
+    </div>
+
+    <div id="listings"></div>
+    <div id="alertError" class="alert alert-error"></div>
+    <div id="alertSuccess" class="alert alert-success"></div>
+
+    <div id="filterInfo" style="display: none;">
+      Фильтр по автору: <span id="filterAuthor"></span>
+      <button id="clearAuthorFilter">Сбросить</button>
+    </div>
+
+    <div id="pagination" class="pagination"></div>
+  </div>
+</body>
+</html>

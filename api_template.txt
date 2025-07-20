@@ -1,0 +1,19 @@
+api:
+  port: ":${API_PORT}"
+  timeout: ${API_TIMEOUT}
+  healthcheckInterval: ${API_HEALTHCHECK_INTERVAL}
+
+crypto:
+  prime: "${CRYPTO_PRIME}"
+  generator: "${CRYPTO_GENERATOR}"
+  serverSecretKey: "${CRYPTO_SERVER_SECRET_KEY}"
+
+session:
+  lifetime: ${SESSION_LIFETIME}
+  addr: "${SESSION_HOST}:${SESSION_ADDR}"
+
+user:
+  addr: "${USER_HOST}:${USER_ADDR}"
+
+listing:
+  addr: "${LISTING_HOST}:${LISTING_ADDR}"

@@ -1,0 +1,108 @@
+services:
+  vk-internship_api:
+    image: papaloopalous/vk-internship_api:latest
+    container_name: vk-internship_api
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    depends_on:
+      - vk-internship_listing
+      - vk-internship_session
+      - vk-internship_user
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
+
+  vk-internship_listing:
+    image: papaloopalous/vk-internship_listing:latest
+    container_name: vk-internship_listing
+    depends_on:
+      - router
+      - postgres
+    restart: unless-stopped
+
+  vk-internship_session:
+    image: papaloopalous/vk-internship_session:latest
+    container_name: vk-internship_session
+    depends_on:
+      - router
+    restart: unless-stopped
+
+  vk-internship_user:
+    image: papaloopalous/vk-internship_user:latest
+    container_name: vk-internship_user
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init_db/initPostgre/init:/docker-entrypoint-initdb.d
+
+
+  router:
+    build:
+      context: ./init_db/initTarantool
+      dockerfile: Dockerfile
+    environment:
+      - TARANTOOL_INSTANCE_NAME=router
+    ports:
+      - "3301:3301"
+    volumes:
+      - ./init_db/initTarantool/router.lua:/opt/tarantool/router.lua
+    command: tarantool /opt/tarantool/router.lua
+    depends_on:
+      - storage1
+      - storage2
+    restart: unless-stopped
+
+  storage1:
+    build:
+      context: ./init_db/initTarantool
+      dockerfile: Dockerfile
+    environment:
+      - TARANTOOL_INSTANCE_NAME=storage1
+    ports:
+      - "3302:3302"
+    volumes:
+      - ./init_db/initTarantool/storage1.lua:/opt/tarantool/storage1.lua
+    command: tarantool /opt/tarantool/storage1.lua
+    healthcheck:
+      test: ["CMD", "tarantool", "-e", "os.exit(0)"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  storage2:
+    build:
+      context: ./init_db/initTarantool
+      dockerfile: Dockerfile
+    environment:
+      - TARANTOOL_INSTANCE_NAME=storage2
+    ports:
+      - "3303:3303"
+    volumes:
+      - ./init_db/initTarantool/storage2.lua:/opt/tarantool/storage2.lua
+    command: tarantool /opt/tarantool/storage2.lua
+    healthcheck:
+      test: ["CMD", "tarantool", "-e", "os.exit(0)"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  storage1_data:
+  storage2_data:
