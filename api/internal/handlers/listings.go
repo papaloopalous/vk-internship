@@ -35,7 +35,7 @@ func (p *ListingHandler) GetAllListings(w http.ResponseWriter, r *http.Request) 
 	pageInt, err := strconv.Atoi(page)
 	if err != nil || pageInt < 1 {
 		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
-			messages.LogDetails: err.Error(),
+			messages.LogPage: page,
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
 		return
@@ -44,7 +44,7 @@ func (p *ListingHandler) GetAllListings(w http.ResponseWriter, r *http.Request) 
 	minPriceInt, err := strconv.Atoi(minPrice)
 	if err != nil || minPriceInt < 1 || minPriceInt > 100000000 {
 		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
-			messages.LogDetails: err.Error(),
+			messages.LogPrice: minPrice,
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
 		return
@@ -53,7 +53,7 @@ func (p *ListingHandler) GetAllListings(w http.ResponseWriter, r *http.Request) 
 	maxPriceInt, err := strconv.Atoi(maxPrice)
 	if err != nil || maxPriceInt < 1 || maxPriceInt > 100000000 || maxPriceInt < minPriceInt {
 		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
-			messages.LogDetails: err.Error(),
+			messages.LogPrice: maxPrice,
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
 		return

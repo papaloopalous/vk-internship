@@ -48,6 +48,7 @@ const (
 	LogID            = "id"
 	LogImageURL      = "image_url"
 	LogListingID     = "listing_id"
+	LogPage          = "page"
 )
 
 // healthcheck

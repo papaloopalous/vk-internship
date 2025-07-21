@@ -27,19 +27,19 @@ async function loadListings(page = 1) {
   const sortOrder = document.getElementById('sortOrder').value;
   const onlyLiked = document.getElementById('onlyLiked').checked;
 
-  const minPrice = document.getElementById('minPrice').value;
-  const maxPrice = document.getElementById('maxPrice').value;
-
+  const minPrice = parseInt(document.getElementById('minPrice').value, 10);
+  const maxPrice = parseInt(document.getElementById('maxPrice').value, 10);
 
   const params = new URLSearchParams({
     sort_field: sortField,
     sort_order: sortOrder,
     page: page,
     only_liked: onlyLiked,
-    target_user_id: currentTargetUserId,
-    min_price: minPrice || 0,
-    max_price: maxPrice || 100000000
+    target_user_id: currentTargetUserId
   });
+
+  if (!isNaN(minPrice)) params.append('min_price', minPrice);
+  if (!isNaN(maxPrice)) params.append('max_price', maxPrice);
 
   try {
     const token = await getAuthToken();
