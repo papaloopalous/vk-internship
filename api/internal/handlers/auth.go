@@ -272,7 +272,9 @@ func (p *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 
 	logger.Info(messages.ServiceAuth, messages.LogStatusUserAuth, map[string]string{messages.LogUserID: userID.String()})
 	response.WriteAPIResponse(w, http.StatusCreated, true, messages.StatusAuth,
-		map[string]string{messages.AuthToken: token})
+		map[string]string{messages.AuthToken: token,
+			messages.LogUserID:   userID.String(),
+			messages.LogUsername: username})
 }
 
 // LogOUT завершает сессию пользователя
