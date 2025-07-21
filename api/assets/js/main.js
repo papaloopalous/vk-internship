@@ -38,8 +38,8 @@ async function loadListings(page = 1) {
     target_user_id: currentTargetUserId
   });
 
-  if (!isNaN(minPrice)) params.append('min_price', minPrice);
-  if (!isNaN(maxPrice)) params.append('max_price', maxPrice);
+  params.append('min_price', !isNaN(minPrice) ? minPrice : 1);
+  params.append('max_price', !isNaN(maxPrice) ? maxPrice : 100000000);
 
   try {
     const token = await getAuthToken();
@@ -65,8 +65,8 @@ async function loadListings(page = 1) {
       div.className = 'listing';
 
       const ownerButtons = listing.is_yours ? `
-        <button class="edit-btn" data-id="${listing.id}">✏️ Редактировать</button>
-        <button class="delete-btn" data-id="${listing.id}">🗑️ Удалить</button>
+        <button class="edit-btn" data-id="${listing.id}">Редактировать</button>
+        <button class="delete-btn" data-id="${listing.id}">Удалить</button>
       ` : '';
 
       const liked = listing.is_liked;
