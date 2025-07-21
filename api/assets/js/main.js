@@ -27,12 +27,18 @@ async function loadListings(page = 1) {
   const sortOrder = document.getElementById('sortOrder').value;
   const onlyLiked = document.getElementById('onlyLiked').checked;
 
+  const minPrice = document.getElementById('minPrice').value;
+  const maxPrice = document.getElementById('maxPrice').value;
+
+
   const params = new URLSearchParams({
     sort_field: sortField,
     sort_order: sortOrder,
     page: page,
     only_liked: onlyLiked,
-    target_user_id: currentTargetUserId
+    target_user_id: currentTargetUserId,
+    min_price: minPrice || 0,
+    max_price: maxPrice || 100000000
   });
 
   try {

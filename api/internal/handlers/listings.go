@@ -29,9 +29,29 @@ func (p *ListingHandler) GetAllListings(w http.ResponseWriter, r *http.Request) 
 	onlyLikedStr := r.URL.Query().Get(messages.ReqOnlyLiked)
 	targetUserId := r.URL.Query().Get(messages.ReqTargetUserID)
 	page := r.URL.Query().Get(messages.ReqPage)
+	minPrice := r.URL.Query().Get(messages.ReqMinPrice)
+	maxPrice := r.URL.Query().Get(messages.ReqMaxPrice)
 
 	pageInt, err := strconv.Atoi(page)
 	if err != nil || pageInt < 1 {
+		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
+			messages.LogDetails: err.Error(),
+		})
+		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
+		return
+	}
+
+	minPriceInt, err := strconv.Atoi(minPrice)
+	if err != nil || minPriceInt < 1 || minPriceInt > 100000000 {
+		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
+			messages.LogDetails: err.Error(),
+		})
+		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
+		return
+	}
+
+	maxPriceInt, err := strconv.Atoi(maxPrice)
+	if err != nil || maxPriceInt < 1 || maxPriceInt > 100000000 || maxPriceInt < minPriceInt {
 		logger.Error(messages.ServiceListing, messages.LogErrParamsRequest, map[string]string{
 			messages.LogDetails: err.Error(),
 		})
@@ -53,14 +73,18 @@ func (p *ListingHandler) GetAllListings(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	listings, totalPages, currentPage, err := p.Listing.GetAllListings(
-		userID,
-		targetUser,
-		sortField,
-		sortOrder,
-		onlyLiked,
-		pageInt,
-	)
+	filter := repo.ListingFilter{
+		UserID:     userID,
+		TargetUser: targetUser,
+		SortField:  sortField,
+		SortOrder:  sortOrder,
+		OnlyLiked:  onlyLiked,
+		Page:       pageInt,
+		MinPrice:   minPriceInt,
+		MaxPrice:   maxPriceInt,
+	}
+
+	listings, totalPages, currentPage, err := p.Listing.GetAllListings(filter)
 	if err != nil {
 		logger.Error(messages.ServiceListing, messages.LogErrDBQuery, map[string]string{
 			messages.LogDetails: err.Error(),

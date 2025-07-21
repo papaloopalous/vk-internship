@@ -45,7 +45,7 @@ func (p *AuthHandler) EncryptionKey(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		logger.Error(messages.ServiceAuth, messages.LogErrParamsRequest, map[string]string{
+		logger.Error(messages.ServiceAuth, messages.LogErrCryptoParamsRequest, map[string]string{
 			messages.LogDetails: err.Error(),
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
@@ -78,7 +78,7 @@ func (p *AuthHandler) EncryptionKey(w http.ResponseWriter, r *http.Request) {
 func (p *AuthHandler) LogIN(w http.ResponseWriter, r *http.Request) {
 	var requestData map[string]string
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
-		logger.Error(messages.ServiceAuth, messages.LogErrParamsRequest, map[string]string{
+		logger.Error(messages.ServiceAuth, messages.LogErrCryptoParamsRequest, map[string]string{
 			messages.LogDetails: err.Error(),
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)
@@ -175,7 +175,7 @@ func isValidPassword(password string) bool {
 func (p *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 	var requestData map[string]string
 	if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
-		logger.Error(messages.ServiceAuth, messages.LogErrParamsRequest, map[string]string{
+		logger.Error(messages.ServiceAuth, messages.LogErrCryptoParamsRequest, map[string]string{
 			messages.LogDetails: err.Error(),
 		})
 		response.WriteAPIResponse(w, http.StatusBadRequest, false, messages.ClientErrBadRequest, nil)

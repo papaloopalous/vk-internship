@@ -193,6 +193,13 @@ func (s *server) GetAllListings(ctx context.Context, req *listingpb.GetAllListin
 		argIdx++
 	}
 
+	conditions = append(conditions, fmt.Sprintf("l.price >= $%d", argIdx))
+	args = append(args, req.MinPrice)
+	argIdx++
+	conditions = append(conditions, fmt.Sprintf("l.price <= $%d", argIdx))
+	args = append(args, req.MaxPrice)
+	argIdx++
+
 	// Подсчёт общего количества записей
 	countQuery := baseQuery
 	if len(conditions) > 0 {

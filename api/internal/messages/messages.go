@@ -70,6 +70,8 @@ const (
 	ReqOnlyLiked    = "only_liked"
 	ReqTargetUserID = "target_user_id"
 	ReqPage         = "page"
+	ReqMinPrice     = "min_price"
+	ReqMaxPrice     = "max_price"
 )
 
 // Токен авторизации
@@ -122,7 +124,8 @@ const (
 	LogErrDecryption           = "decryption failed"
 	LogErrInvalidPublicKey     = "invalid client public key"
 	LogErrKeyDerivation        = "failed to derive shared key"
-	LogErrParamsRequest        = "failed to send crypto params"
+	LogErrCryptoParamsRequest  = "failed to send crypto params"
+	LogErrParamsRequest        = "invalid request params"
 	LogErrHexDecode            = "failed to decode hex key"
 	LogErrKeyLength            = "invalid key length"
 	LogErrBase64Decode         = "failed to decode base64 data"

@@ -198,6 +198,8 @@ type GetAllListingsRequest struct {
 	SortOrder     string                 `protobuf:"bytes,4,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"`
 	OnlyLiked     bool                   `protobuf:"varint,5,opt,name=only_liked,json=onlyLiked,proto3" json:"only_liked,omitempty"`
 	Page          int64                  `protobuf:"varint,6,opt,name=page,proto3" json:"page,omitempty"`
+	MinPrice      int64                  `protobuf:"varint,7,opt,name=min_price,json=minPrice,proto3" json:"min_price,omitempty"`
+	MaxPrice      int64                  `protobuf:"varint,8,opt,name=max_price,json=maxPrice,proto3" json:"max_price,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,6 +272,20 @@ func (x *GetAllListingsRequest) GetOnlyLiked() bool {
 func (x *GetAllListingsRequest) GetPage() int64 {
 	if x != nil {
 		return x.Page
+	}
+	return 0
+}
+
+func (x *GetAllListingsRequest) GetMinPrice() int64 {
+	if x != nil {
+		return x.MinPrice
+	}
+	return 0
+}
+
+func (x *GetAllListingsRequest) GetMaxPrice() int64 {
+	if x != nil {
+		return x.MaxPrice
 	}
 	return 0
 }
@@ -730,7 +746,7 @@ const file_listing_proto_rawDesc = "" +
 	"\bis_liked\x18\n" +
 	" \x01(\bR\aisLiked\x12\x19\n" +
 	"\bis_yours\x18\v \x01(\bR\aisYours\x12!\n" +
-	"\fauthor_login\x18\f \x01(\tR\vauthorLogin\"\xc7\x01\n" +
+	"\fauthor_login\x18\f \x01(\tR\vauthorLogin\"\x81\x02\n" +
 	"\x15GetAllListingsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12$\n" +
 	"\x0etarget_user_id\x18\x02 \x01(\tR\ftargetUserId\x12\x1d\n" +
@@ -740,7 +756,9 @@ const file_listing_proto_rawDesc = "" +
 	"sort_order\x18\x04 \x01(\tR\tsortOrder\x12\x1d\n" +
 	"\n" +
 	"only_liked\x18\x05 \x01(\bR\tonlyLiked\x12\x12\n" +
-	"\x04page\x18\x06 \x01(\x03R\x04page\"\x8c\x01\n" +
+	"\x04page\x18\x06 \x01(\x03R\x04page\x12\x1b\n" +
+	"\tmin_price\x18\a \x01(\x03R\bminPrice\x12\x1b\n" +
+	"\tmax_price\x18\b \x01(\x03R\bmaxPrice\"\x8c\x01\n" +
 	"\x16GetAllListingsResponse\x12.\n" +
 	"\blistings\x18\x01 \x03(\v2\x12.listingpb.ListingR\blistings\x12\x1f\n" +
 	"\vtotal_pages\x18\x02 \x01(\x03R\n" +

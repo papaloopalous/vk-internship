@@ -47,10 +47,21 @@ type ListingType struct {
 	AuthorLogin string    `json:"author_login"`
 }
 
+type ListingFilter struct {
+	UserID     uuid.UUID
+	TargetUser uuid.UUID
+	SortField  string
+	SortOrder  string
+	OnlyLiked  bool
+	Page       int
+	MinPrice   int
+	MaxPrice   int
+}
+
 // ListingRepo определяет методы для работы с объявлениями
 type ListingRepo interface {
 	// GetAllListings получает все объявления
-	GetAllListings(userID uuid.UUID, targetUser uuid.UUID, sortField string, sortOrder string, onlyLiked bool, page int) (listing []ListingType, totalPages int64, cuurentPage int64, err error)
+	GetAllListings(filter ListingFilter) (listing []ListingType, totalPages int64, cuurentPage int64, err error)
 
 	// AddListing добавляет новое объявление
 	AddListing(listing ListingType) (id uuid.UUID, err error)

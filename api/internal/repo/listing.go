@@ -29,19 +29,21 @@ const (
 // GetAllListings получает все объявления
 // userID - ID пользователя, для которого получаем объявления
 // targetUser - ID пользователя, чьи объявления получаем
-func (r *ListingRepoGRPC) GetAllListings(userID uuid.UUID, targetUser uuid.UUID, sortField string, sortOrder string, onlyLiked bool, page int) (listing []ListingType, totalPages int64, cuurentPage int64, err error) {
+func (r *ListingRepoGRPC) GetAllListings(filter ListingFilter) (listing []ListingType, totalPages int64, cuurentPage int64, err error) {
 	md := metadata.New(map[string]string{
 		authorization: bearer + listingToken,
 	})
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
 
 	resp, err := r.service.GetAllListings(ctx, &listingpb.GetAllListingsRequest{
-		TargetUserId: targetUser.String(),
-		SortField:    sortField,
-		SortOrder:    sortOrder,
-		OnlyLiked:    onlyLiked,
-		UserId:       userID.String(),
-		Page:         int64(page),
+		TargetUserId: filter.TargetUser.String(),
+		SortField:    filter.SortField,
+		SortOrder:    filter.SortOrder,
+		OnlyLiked:    filter.OnlyLiked,
+		UserId:       filter.UserID.String(),
+		Page:         int64(filter.Page),
+		MinPrice:     int64(filter.MinPrice),
+		MaxPrice:     int64(filter.MaxPrice),
 	})
 
 	if err != nil {

@@ -39,6 +39,8 @@ message GetAllListingsRequest {
   string sort_order = 4;
   bool only_liked = 5;
   int64 page = 6;
+  int64 min_price = 7;
+  int64 max_price = 8;
 }
 
 message GetAllListingsResponse {
