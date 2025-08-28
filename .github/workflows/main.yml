@@ -212,6 +212,7 @@ jobs:
           LISTING_ADDR=${{ secrets.LISTING_ADDR }}
           EOF
           make all
+          scp .env ${{ secrets.VM_USER }}@$VM_IP:/home/app/
 
 
       - name: Build and Push api Docker Image
@@ -244,6 +245,6 @@ jobs:
           ssh ${{ secrets.VM_USER }}@$VM_IP "echo 1"
           scp compose.yml ${{ secrets.VM_USER }}@$VM_IP:/home/app/
           scp -r ./init_db ${{ secrets.VM_USER }}@$VM_IP:/home/app/
-          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo mkdir -p logs uploads && sudo docker-compose down || echo 'No existing Compose stack to stop'"
-          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker-compose pull"
-          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker-compose up -d"
+          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo mkdir -p logs uploads && sudo docker compose down || echo 'No existing Compose stack to stop'"
+          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker compose pull"
+          ssh ${{ secrets.VM_USER }}@$VM_IP "cd /home/app && sudo docker compose up -d"
